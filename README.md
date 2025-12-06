@@ -1,1 +1,3 @@
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=DearIcer)](https://github.com/anuraghazra/github-readme-stats)
+
+<!-- 本地生成的 SVG（由 .github/workflows/generate-stats.yml 生成到 docs/stats.svg） -->
+<img alt="GitHub stats" src="./docs/stats.svg" />
