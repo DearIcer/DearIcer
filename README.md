@@ -18,10 +18,10 @@
 
 <div align="center">
   <a href="https://github.com/DearIcer/WPFAdmin">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=DearIcer&repo=dream-maze&theme=radical&hide_border=true&title_color=FF5F6D" width="49%" />
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=DearIcer&repo=WPFAdmin&theme=radical&hide_border=true&title_color=FF5F6D" width="49%" />
   </a>
   <a href="https://github.com/DearIcer/Lyric_Importer">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=DearIcer&repo=doctopus&theme=radical&hide_border=true&title_color=FF5F6D" width="49%" />
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=DearIcer&repo=Lyric_Importer&theme=radical&hide_border=true&title_color=FF5F6D" width="49%" />
   </a>
 </div>
 
