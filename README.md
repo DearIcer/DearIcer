@@ -10,20 +10,6 @@
   <img src="https://github-profile-trophy.vercel.app/?username=DearIcer&theme=radical&no-frame=true&row=1&column=7" width="100%" alt="GitHub 奖杯" />
 </div>
 
-<!-- 项目展示部分 - 统一标题样式并对齐图标 -->
-<h2 align="center">
-  <img src="https://media.giphy.com/media/iY8CRBdQXODJSCERIr/giphy.gif" width="30px" height="30px" style="vertical-align: middle; position: relative; top: -2px;"/>
-  精选项目
-</h2>
-
-<div align="center">
-  <a href="https://github.com/DearIcer/WPFAdmin">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=DearIcer&repo=WPFAdmin&theme=radical&hide_border=true&title_color=FF5F6D" width="49%" />
-  </a>
-  <a href="https://github.com/DearIcer/Lyric_Importer">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=DearIcer&repo=Lyric_Importer&theme=radical&hide_border=true&title_color=FF5F6D" width="49%" />
-  </a>
-</div>
 
 <!-- 添加项目按钮 -->
 <div align="center">
