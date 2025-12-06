@@ -1,0 +1,38 @@
+name: Generate GitHub README stats
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 3 * * 1'  # 每周一 UTC 03:00 运行（可按需调整）
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run stats generator
+        env:
+          USERNAME: DearIcer
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 scripts/generate_stats.py
+
+      - name: Commit & push generated SVG
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions[bot]
+          author_email: 41898282+github-actions[bot]@users.noreply.github.com
+          message: "chore: update generated stats.svg"
+          add: "docs/stats.svg"
