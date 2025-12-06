@@ -1,3 +1,2 @@
-
-<!-- 本地生成的 SVG（由 .github/workflows/generate-stats.yml 生成到 docs/stats.svg） -->
-<img alt="GitHub stats" src="./docs/stats.svg" />
+<!-- 轻量级 badges 作为备用（shields.io） -->
+[![Followers](https://img.shields.io/github/followers/DearIcer?label=Followers&style=social)](https://github.com/DearIcer)
