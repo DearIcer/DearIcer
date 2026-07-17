@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DearIcer · 个人主页</title>
+<meta name="description" content="DearIcer 的个人主页 — 开发者 / 创造者 / 终身学习者" />
+<link rel="icon" href="https://github.com/DearIcer.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --c1: #22d3ee;
+    --c2: #a78bfa;
+    --c3: #f472b6;
+    --bg: #06080f;
+  }
+  * { scroll-behavior: smooth; }
+  html, body { background: var(--bg); }
+  body {
+    font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+    color: #e2e8f0;
+    overflow-x: hidden;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ---------- 背景 ---------- */
+  #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .aurora {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  }
+  .aurora::before, .aurora::after {
+    content: ''; position: absolute; width: 60vmax; height: 60vmax; border-radius: 50%;
+    filter: blur(120px); opacity: .18;
+  }
+  .aurora::before {
+    background: radial-gradient(circle, #0891b2, transparent 65%);
+    top: -20vmax; left: -15vmax; animation: drift1 22s ease-in-out infinite alternate;
+  }
+  .aurora::after {
+    background: radial-gradient(circle, #7c3aed, transparent 65%);
+    bottom: -25vmax; right: -15vmax; animation: drift2 26s ease-in-out infinite alternate;
+  }
+  @keyframes drift1 { to { transform: translate(12vmax, 8vmax) scale(1.15); } }
+  @keyframes drift2 { to { transform: translate(-10vmax, -10vmax) scale(1.1); } }
+
+  .grid-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(148,163,184,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148,163,184,.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 75%);
+  }
+
+  /* ---------- 通用 ---------- */
+  .gradient-text {
+    background: linear-gradient(120deg, var(--c1), var(--c2) 50%, var(--c3));
+    background-size: 200% 200%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: gradShift 6s ease infinite;
+  }
+  @keyframes gradShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  .glass {
+    background: rgba(15, 23, 42, .55);
+    border: 1px solid rgba(148, 163, 184, .12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .reveal { opacity: 0; transform: translateY(36px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ---------- Hero ---------- */
+  .avatar-ring {
+    position: relative;
+  }
+  .avatar-ring::before {
+    content: ''; position: absolute; inset: -6px; border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--c1), var(--c2), var(--c3), var(--c1));
+    animation: spin 5s linear infinite;
+    filter: blur(1px);
+  }
+  .avatar-ring::after {
+    content: ''; position: absolute; inset: -6px; border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--c1), var(--c2), var(--c3), var(--c1));
+    animation: spin 5s linear infinite;
+    filter: blur(22px); opacity: .5; z-index: -1;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .typing-caret {
+    display: inline-block; width: 3px; height: 1.15em; margin-left: 4px;
+    background: var(--c1); vertical-align: text-bottom;
+    animation: blink 1s steps(1) infinite;
+    box-shadow: 0 0 12px var(--c1);
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .btn-glow {
+    position: relative; transition: all .3s ease;
+  }
+  .btn-glow:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px -6px rgba(34, 211, 238, .45);
+    border-color: rgba(34, 211, 238, .5);
+  }
+
+  .scroll-hint { animation: bounceY 2s ease-in-out infinite; }
+  @keyframes bounceY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+  /* ---------- 卡片 ---------- */
+  .card {
+    position: relative;
+    transition: transform .35s cubic-bezier(.22,.61,.36,1), border-color .35s, box-shadow .35s;
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+    background: linear-gradient(135deg, rgba(34,211,238,.6), transparent 40%, transparent 60%, rgba(167,139,250,.6));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0; transition: opacity .35s;
+  }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px -20px rgba(34,211,238,.25); }
+  .card:hover::before { opacity: 1; }
+
+  .skill-chip {
+    transition: all .3s ease;
+  }
+  .skill-chip:hover {
+    transform: translateY(-4px) scale(1.05);
+    border-color: rgba(34,211,238,.6);
+    box-shadow: 0 10px 24px -8px rgba(34,211,238,.4);
+  }
+
+  .lang-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .lang-bar { transition: width 1s cubic-bezier(.22,.61,.36,1); }
+
+  /* ---------- 活跃热力图 ---------- */
+  .hm-grid { display: grid; grid-template-rows: repeat(7, 12px); grid-auto-flow: column; grid-auto-columns: 12px; gap: 3px; width: max-content; margin: 0 auto; }
+  .hm-cell { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .hm-grid .hm-cell { transition: transform .15s ease, box-shadow .15s ease; cursor: default; }
+  .hm-grid .hm-cell:hover { transform: scale(1.35); box-shadow: 0 0 10px rgba(34,211,238,.6); }
+
+  /* ---------- 导航 ---------- */
+  #nav { transition: all .4s ease; }
+  #nav.scrolled { background: rgba(6,8,15,.75); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(148,163,184,.1); }
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 2px;
+    background: linear-gradient(90deg, var(--c1), var(--c2)); transition: width .3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  .stats-img { width: 100%; border-radius: 12px; }
+
+  ::selection { background: rgba(34,211,238,.35); }
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: #0b1120; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(var(--c1), var(--c2)); border-radius: 8px; }
+</style>
+</head>
+<body class="relative">
+
+<div class="aurora"></div>
+<div class="grid-overlay"></div>
+<canvas id="particles"></canvas>
+
+<!-- ============ 导航栏 ============ -->
+<nav id="nav" class="fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#home" class="mono text-lg font-bold gradient-text">&lt;DearIcer /&gt;</a>
+    <div class="hidden md:flex items-center gap-8 text-sm text-slate-300">
+      <a href="#about" class="nav-link hover:text-cyan-300 transition">关于我</a>
+      <a href="#skills" class="nav-link hover:text-cyan-300 transition">技能栈</a>
+      <a href="#projects" class="nav-link hover:text-cyan-300 transition">项目</a>
+      <a href="#stats" class="nav-link hover:text-cyan-300 transition">GitHub 数据</a>
+      <a href="#contact" class="nav-link hover:text-cyan-300 transition">联系我</a>
+    </div>
+    <a href="https://github.com/DearIcer" target="_blank" rel="noopener"
+       class="glass px-4 py-1.5 rounded-full text-sm mono hover:border-cyan-400/50 transition flex items-center gap-2">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<!-- ============ Hero ============ -->
+<header id="home" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 text-center">
+  <div class="avatar-ring w-36 h-36 md:w-44 md:h-44 rounded-full mb-8">
+    <img src="https://github.com/DearIcer.png" alt="DearIcer"
+         class="w-full h-full rounded-full object-cover relative z-10 border-4 border-[#06080f]" />
+  </div>
+
+  <p class="mono text-cyan-300/80 text-sm md:text-base tracking-[0.35em] mb-4">HELLO, WORLD · 你好，世界</p>
+  <h1 class="text-5xl md:text-7xl font-black mb-5">
+    我是 <span class="gradient-text">DearIcer</span>
+  </h1>
+  <div class="text-xl md:text-2xl text-slate-300 h-9 mb-8">
+    <span id="typing" class="mono"></span><span class="typing-caret"></span>
+  </div>
+
+  <p class="max-w-xl text-slate-400 leading-relaxed mb-10">
+    热爱代码，也热爱把想法变成现实的过程。<br class="hidden md:block" />
+    在这里记录我的技术栈、项目与成长足迹。
+  </p>
+
+  <div class="flex flex-wrap items-center justify-center gap-4">
+    <a href="#projects" class="btn-glow glass px-7 py-3 rounded-full font-medium text-cyan-300 border border-slate-600/60">
+      看看我的项目 →
+    </a>
+    <a href="https://github.com/DearIcer" target="_blank" rel="noopener"
+       class="btn-glow px-7 py-3 rounded-full font-medium text-white border border-transparent"
+       style="background: linear-gradient(120deg, #0891b2, #7c3aed);">
+      关注我的 GitHub
+    </a>
+  </div>
+
+  <a href="#about" class="scroll-hint absolute bottom-10 text-slate-500 hover:text-cyan-300 transition">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </a>
+</header>
+
+<main class="relative z-10 max-w-6xl mx-auto px-6">
+
+  <!-- ============ 关于我 ============ -->
+  <section id="about" class="py-24 reveal">
+    <h2 class="text-3xl md:text-4xl font-bold mb-2"><span class="mono text-cyan-400 text-xl mr-3">01.</span>关于我</h2>
+    <div class="h-1 w-24 rounded-full mb-10" style="background: linear-gradient(90deg, var(--c1), var(--c2));"></div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="card glass rounded-2xl p-7">
+        <div class="text-3xl mb-4">🧊</div>
+        <h3 class="font-bold text-lg mb-2 text-cyan-300">冷静思考</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">像冰一样保持清醒与理性，面对复杂问题时抽丝剥茧，寻找优雅的解决方案。</p>
+      </div>
+      <div class="card glass rounded-2xl p-7">
+        <div class="text-3xl mb-4">⚡</div>
+        <h3 class="font-bold text-lg mb-2 text-violet-300">快速迭代</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">信奉「完成优于完美」，喜欢快速原型、持续打磨，在迭代中让作品不断进化。</p>
+      </div>
+      <div class="card glass rounded-2xl p-7">
+        <div class="text-3xl mb-4">🌱</div>
+        <h3 class="font-bold text-lg mb-2 text-pink-300">终身学习</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">技术世界日新月异，保持好奇、持续输入，用开源和社区与他人共同成长。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 技能栈 ============ -->
+  <section id="skills" class="py-24 reveal">
+    <h2 class="text-3xl md:text-4xl font-bold mb-2"><span class="mono text-cyan-400 text-xl mr-3">02.</span>技能栈</h2>
+    <div class="h-1 w-24 rounded-full mb-10" style="background: linear-gradient(90deg, var(--c1), var(--c2));"></div>
+
+    <!-- ✏️ 按需修改下面的技能标签 -->
+    <div class="glass rounded-2xl p-8">
+      <h3 class="mono text-sm text-slate-500 mb-4">// 语言</h3>
+      <div class="flex flex-wrap gap-3 mb-8" id="skills-lang"></div>
+      <h3 class="mono text-sm text-slate-500 mb-4">// 框架 & 工具</h3>
+      <div class="flex flex-wrap gap-3" id="skills-tool"></div>
+    </div>
+  </section>
+
+  <!-- ============ 项目（自动拉取 GitHub） ============ -->
+  <section id="projects" class="py-24 reveal">
+    <h2 class="text-3xl md:text-4xl font-bold mb-2"><span class="mono text-cyan-400 text-xl mr-3">03.</span>项目</h2>
+    <div class="h-1 w-24 rounded-full mb-4" style="background: linear-gradient(90deg, var(--c1), var(--c2));"></div>
+    <p class="text-slate-500 text-sm mb-10 mono">// 实时拉取自 GitHub API · 按 Star 排序</p>
+
+    <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="glass rounded-2xl p-7 col-span-full text-center text-slate-500 mono text-sm" id="projects-loading">
+        loading repositories<span class="typing-caret"></span>
+      </div>
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="https://github.com/DearIcer?tab=repositories" target="_blank" rel="noopener"
+         class="btn-glow inline-block glass px-7 py-3 rounded-full text-sm text-cyan-300 border border-slate-600/60">
+        查看全部仓库 →
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ GitHub 数据 ============ -->
+  <section id="stats" class="py-24 reveal">
+    <h2 class="text-3xl md:text-4xl font-bold mb-2"><span class="mono text-cyan-400 text-xl mr-3">04.</span>GitHub 数据</h2>
+    <div class="h-1 w-24 rounded-full mb-10" style="background: linear-gradient(90deg, var(--c1), var(--c2));"></div>
+
+    <!-- 数据总览 + 常用语言：前端实时计算自 GitHub API，不依赖第三方统计服务 -->
+    <div class="grid md:grid-cols-2 gap-6 mb-6">
+      <div class="card glass rounded-2xl p-7">
+        <h3 class="mono text-sm text-slate-500 mb-6">// 数据总览 Overview</h3>
+        <div class="grid grid-cols-2 gap-4" id="overview-grid">
+          <div class="col-span-2 text-center text-slate-500 mono text-sm py-8">loading<span class="typing-caret"></span></div>
+        </div>
+      </div>
+      <div class="card glass rounded-2xl p-7">
+        <h3 class="mono text-sm text-slate-500 mb-6">// 常用语言 Top Languages</h3>
+        <div id="langs-box">
+          <div class="text-center text-slate-500 mono text-sm py-8">loading<span class="typing-caret"></span></div>
+        </div>
+      </div>
+    </div>
+    <!-- 最近 90 天活跃热力图：自渲染自 GitHub Events API，不依赖第三方图片服务 -->
+    <div class="card glass rounded-2xl p-7">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <h3 class="mono text-sm text-slate-500">// 最近 90 天公开动态 Recent Activity</h3>
+        <div class="flex gap-6" id="act-stats"></div>
+      </div>
+      <div id="heatmap" class="overflow-x-auto pb-1">
+        <div class="text-center text-slate-500 mono text-sm py-6">loading<span class="typing-caret"></span></div>
+      </div>
+      <div class="flex items-center justify-end gap-1.5 mt-4 text-xs text-slate-500">
+        <span class="mr-1">少</span>
+        <span class="hm-cell" style="background:rgba(148,163,184,.12)"></span>
+        <span class="hm-cell" style="background:rgba(34,211,238,.3)"></span>
+        <span class="hm-cell" style="background:rgba(34,211,238,.55)"></span>
+        <span class="hm-cell" style="background:rgba(34,211,238,.8)"></span>
+        <span class="hm-cell" style="background:#22d3ee"></span>
+        <span class="ml-1">多</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 联系我 ============ -->
+  <section id="contact" class="py-24 reveal text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-2"><span class="mono text-cyan-400 text-xl mr-3">05.</span>联系我</h2>
+    <div class="h-1 w-24 rounded-full mb-10 mx-auto" style="background: linear-gradient(90deg, var(--c1), var(--c2));"></div>
+
+    <p class="text-slate-400 mb-10 max-w-lg mx-auto">无论是技术交流、项目合作，还是单纯打个招呼，都欢迎随时找我。</p>
+
+    <!-- ✏️ 按需修改 / 增删下面的社交链接 -->
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="https://github.com/DearIcer" target="_blank" rel="noopener" class="btn-glow glass px-6 py-3 rounded-full border border-slate-600/60 flex items-center gap-2 text-sm">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+      <a href="mailto:your-email@example.com" class="btn-glow glass px-6 py-3 rounded-full border border-slate-600/60 flex items-center gap-2 text-sm">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+        Email
+      </a>
+      <a href="https://space.bilibili.com/" target="_blank" rel="noopener" class="btn-glow glass px-6 py-3 rounded-full border border-slate-600/60 flex items-center gap-2 text-sm">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.249-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/></svg>
+        Bilibili
+      </a>
+      <a href="https://dearicer.github.io" target="_blank" rel="noopener" class="btn-glow glass px-6 py-3 rounded-full border border-slate-600/60 flex items-center gap-2 text-sm">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Blog
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="relative z-10 border-t border-slate-800/60 py-8 text-center text-slate-500 text-sm">
+  <p class="mono mb-2">Designed & Built by <span class="gradient-text font-bold">DearIcer</span></p>
+  <p>© <span id="year"></span> · Powered by curiosity and coffee ☕</p>
+</footer>
+
+<script>
+/* ==================== 打字机 ==================== */
+// ✏️ 修改这里的身份标签
+const roles = ['Unity 开发者', 'C# / WPF 开发者', '游戏与工具创造者', '开源爱好者 Open-Source Fan'];
+const typingEl = document.getElementById('typing');
+let rIdx = 0, cIdx = 0, deleting = false;
+(function type() {
+  const word = roles[rIdx];
+  typingEl.textContent = word.slice(0, cIdx);
+  if (!deleting && cIdx < word.length) { cIdx++; setTimeout(type, 90); }
+  else if (!deleting) { deleting = true; setTimeout(type, 1600); }
+  else if (cIdx > 0) { cIdx--; setTimeout(type, 45); }
+  else { deleting = false; rIdx = (rIdx + 1) % roles.length; setTimeout(type, 400); }
+})();
+
+/* ==================== 技能标签 ==================== */
+// ✏️ 按需修改技能列表（图标来自 skillicons.dev）
+const skillGroups = {
+  'skills-lang': ['cs', 'cpp', 'c', 'python', 'lua'],
+  'skills-tool': ['unity', 'dotnet', 'git', 'github', 'visualstudio', 'rider', 'vscode', 'blender', 'ps', 'linux']
+};
+// 技能显示名（小写 id -> 展示名）
+const skillNames = { cs:'C#', cpp:'C++', c:'C', python:'Python', lua:'Lua', unity:'Unity', dotnet:'.NET', git:'Git', github:'GitHub', visualstudio:'Visual Studio', rider:'Rider', vscode:'VS Code', blender:'Blender', ps:'Photoshop', linux:'Linux' };
+for (const [id, skills] of Object.entries(skillGroups)) {
+  const box = document.getElementById(id);
+  skills.forEach(s => {
+    const chip = document.createElement('div');
+    chip.className = 'skill-chip glass rounded-xl px-4 py-3 flex items-center gap-2 border border-slate-700/50';
+    chip.innerHTML = `<img src="https://skillicons.dev/icons?i=${s}" alt="${s}" class="w-7 h-7" loading="lazy" />
+                      <span class="text-sm text-slate-300">${skillNames[s] || s}</span>`;
+    box.appendChild(chip);
+  });
+}
+
+/* ==================== GitHub 项目拉取 ==================== */
+const LANG_COLORS = {
+  JavaScript:'#f1e05a', TypeScript:'#3178c6', Python:'#3572A5', Java:'#b07219', Go:'#00ADD8',
+  'C++':'#f34b7d', C:'#555555', 'C#':'#178600', HTML:'#e34c26', CSS:'#563d7c', Vue:'#41b883',
+  Rust:'#dea584', Shell:'#89e051', PHP:'#4F5D95', Ruby:'#701516', Swift:'#F05138', Kotlin:'#A97BFF',
+  Dart:'#00B4AB', Lua:'#000080', Dockerfile:'#384d54', 'Jupyter Notebook':'#DA5B0B',
+  ShaderLab:'#222c37', HLSL:'#aace60', GLSL:'#5686a5', CMake:'#DA3434',
+  PowerShell:'#012456', Batchfile:'#C1F12E', 'ASP.NET':'#9400ff', QML:'#44a51c'
+};
+/* ============ GitHub 数据共享加载（localStorage 缓存 10 分钟，防 API 限流） ============ */
+const GH_CACHE_KEY = 'gh_cache_v1';
+function getGithubData() {
+  try {
+    const c = JSON.parse(localStorage.getItem(GH_CACHE_KEY));
+    if (c && Date.now() - c.t < 10 * 60 * 1000) return Promise.resolve(c.d);
+  } catch (e) {}
+  return Promise.all([
+    fetch('https://api.github.com/users/DearIcer').then(r => { if (!r.ok) throw 0; return r.json(); }),
+    fetch('https://api.github.com/users/DearIcer/repos?sort=updated&per_page=100').then(r => { if (!r.ok) throw 0; return r.json(); })
+  ]).then(([user, repos]) => {
+    const d = { user, repos };
+    try { localStorage.setItem(GH_CACHE_KEY, JSON.stringify({ t: Date.now(), d })); } catch (e) {}
+    return d;
+  });
+}
+
+/* ==================== GitHub 项目渲染 ==================== */
+getGithubData()
+  .then(({ repos }) => {
+    const grid = document.getElementById('projects-grid');
+    grid.innerHTML = '';
+    const list = repos
+      .filter(r => !r.fork)
+      .sort((a, b) => (b.stargazers_count - a.stargazers_count) || (new Date(b.pushed_at) - new Date(a.pushed_at)))
+      .slice(0, 6);
+    if (!list.length) throw new Error('empty');
+    list.forEach(repo => {
+      const color = LANG_COLORS[repo.language] || '#94a3b8';
+      const card = document.createElement('a');
+      card.href = repo.html_url;
+      card.target = '_blank'; card.rel = 'noopener';
+      card.className = 'card glass rounded-2xl p-6 flex flex-col group';
+      card.innerHTML = `
+        <div class="flex items-start justify-between mb-3">
+          <svg class="text-cyan-400/80" width="22" height="22" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25v3.25a.25.25 0 0 0 .4.2l1.45-1.087a.249.249 0 0 1 .3 0L8.6 15.7a.25.25 0 0 0 .4-.2v-3.25a.25.25 0 0 0-.25-.25h-3.5a.25.25 0 0 0-.25.25Z"/></svg>
+          <svg class="text-slate-500 group-hover:text-cyan-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2 group-hover:text-cyan-300 transition mono">${repo.name}</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-4 flex-1">${repo.description || '暂无描述 / No description yet.'}</p>
+        <div class="flex items-center gap-4 text-xs text-slate-500">
+          ${repo.language ? `<span class="flex items-center gap-1.5"><span class="lang-dot" style="background:${color}"></span>${repo.language}</span>` : ''}
+          <span class="flex items-center gap-1">★ ${repo.stargazers_count}</span>
+          <span class="flex items-center gap-1">⑂ ${repo.forks_count}</span>
+        </div>`;
+      grid.appendChild(card);
+    });
+  })
+  .catch(() => {
+    document.getElementById('projects-grid').innerHTML = `
+      <div class="glass rounded-2xl p-10 col-span-full text-center">
+        <p class="text-slate-400 mb-4">项目列表暂时加载失败（GitHub API 限流），请直接访问我的 GitHub 查看 👇</p>
+        <a href="https://github.com/DearIcer?tab=repositories" target="_blank" rel="noopener" class="text-cyan-300 mono hover:underline">github.com/DearIcer →</a>
+      </div>`;
+  });
+
+/* ==================== GitHub 数据总览 & 常用语言 ==================== */
+const statIcons = {
+  repo:  '<svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25v3.25a.25.25 0 0 0 .4.2l1.45-1.087a.249.249 0 0 1 .3 0L8.6 15.7a.25.25 0 0 0 .4-.2v-3.25a.25.25 0 0 0-.25-.25h-3.5a.25.25 0 0 0-.25.25Z"/></svg>',
+  star:  '<svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>',
+  fork:  '<svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"/></svg>',
+  users: '<svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.508 5.508 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4 4 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.493 3.493 0 0 1 2 5.5ZM11 4a3.001 3.001 0 0 1 2.22 5.018 5.01 5.01 0 0 1 2.56 3.012.749.749 0 0 1-.885.954.752.752 0 0 1-.549-.514 3.507 3.507 0 0 0-2.522-2.372.75.75 0 0 1-.574-.73v-.352a.75.75 0 0 1 .416-.672A1.5 1.5 0 0 0 11 5.5.75.75 0 0 1 11 4Zm-5.5-.5a2 2 0 1 0-.001 3.999A2 2 0 0 0 5.5 3.5Z"/></svg>'
+};
+const overviewDefs = [
+  { key: 'repos',     label: '公开仓库', icon: 'repo',  color: '#22d3ee' },
+  { key: 'stars',     label: '总 Star',  icon: 'star',  color: '#facc15' },
+  { key: 'forks',     label: '总 Fork',  icon: 'fork',  color: '#a78bfa' },
+  { key: 'followers', label: '粉丝',     icon: 'users', color: '#f472b6' }
+];
+function countUp(el, target, dur = 1200) {
+  const t0 = performance.now();
+  (function tick(t) {
+    const p = Math.min((t - t0) / dur, 1);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString();
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+function loadGithubStats() {
+  const grid = document.getElementById('overview-grid');
+  const langsBox = document.getElementById('langs-box');
+  getGithubData().then(({ user, repos }) => {
+    const own = repos.filter(r => !r.fork);
+    const data = {
+      repos: user.public_repos,
+      stars: own.reduce((s, r) => s + r.stargazers_count, 0),
+      forks: own.reduce((s, r) => s + r.forks_count, 0),
+      followers: user.followers
+    };
+    grid.innerHTML = '';
+    overviewDefs.forEach(d => {
+      const tile = document.createElement('div');
+      tile.className = 'rounded-xl p-5 text-center border border-slate-700/40 bg-slate-900/40';
+      tile.innerHTML = `
+        <div class="flex justify-center mb-2" style="color:${d.color}">${statIcons[d.icon]}</div>
+        <div class="text-3xl font-black mono mb-1" style="color:${d.color}" data-v="${data[d.key]}">0</div>
+        <div class="text-xs text-slate-400">${d.label}</div>`;
+      grid.appendChild(tile);
+      countUp(tile.querySelector('[data-v]'), data[d.key]);
+    });
+
+    // 语言统计：按各仓库主语言 × 仓库体积（KB）加权汇总，无需额外 API 请求
+    const total = {};
+    own.forEach(r => { if (r.language) total[r.language] = (total[r.language] || 0) + Math.max(r.size || 0, 1); });
+    const sum = Object.values(total).reduce((a, b) => a + b, 0);
+    const entries = Object.entries(total).sort((a, b) => b[1] - a[1]);
+    if (!sum || !entries.length) { langsBox.innerHTML = '<div class="text-center text-slate-500 text-sm py-8">暂无语言数据</div>'; return; }
+    const top = entries.slice(0, 6);
+    const rest = entries.slice(6).reduce((s, e) => s + e[1], 0);
+    if (rest) top.push(['其他', rest]);
+    langsBox.innerHTML = '';
+    top.forEach(([name, bytes], i) => {
+      const pct = (bytes / sum * 100);
+      const color = LANG_COLORS[name] || '#8b949e';
+      const row = document.createElement('div');
+      row.className = 'mb-4';
+      row.innerHTML = `
+        <div class="flex justify-between text-xs mb-1.5">
+          <span class="text-slate-300 flex items-center gap-2"><span class="lang-dot" style="background:${color}"></span>${name}</span>
+          <span class="mono text-slate-500">${pct.toFixed(1)}%</span>
+        </div>
+        <div class="h-2 rounded-full bg-slate-800/80 overflow-hidden">
+          <div class="lang-bar h-full rounded-full" style="width:0%;background:linear-gradient(90deg,${color},${color}cc)" data-w="${pct}"></div>
+        </div>`;
+      langsBox.appendChild(row);
+      setTimeout(() => { row.querySelector('.lang-bar').style.width = pct + '%'; }, 150 + i * 120);
+    });
+  }).catch(() => {
+    const tip = '<div class="col-span-2 text-center text-slate-500 text-sm py-8">数据加载失败（API 限流），请访问 <a class="text-cyan-300 hover:underline" target="_blank" rel="noopener" href="https://github.com/DearIcer">github.com/DearIcer</a></div>';
+    grid.innerHTML = tip;
+    langsBox.innerHTML = tip.replace('col-span-2 ', '');
+  });
+}
+loadGithubStats();
+
+/* ==================== 最近 90 天活跃热力图 ==================== */
+const ACT_CACHE_KEY = 'gh_act_cache_v1';
+function loadActivity() {
+  const hm = document.getElementById('heatmap');
+  const stats = document.getElementById('act-stats');
+  const fail = () => {
+    hm.innerHTML = '<div class="text-center text-slate-500 text-sm py-6">动态加载失败（API 限流），请访问 <a class="text-cyan-300 hover:underline" target="_blank" rel="noopener" href="https://github.com/DearIcer">github.com/DearIcer</a></div>';
+  };
+  let eventsP;
+  try {
+    const c = JSON.parse(localStorage.getItem(ACT_CACHE_KEY));
+    if (c && Date.now() - c.t < 10 * 60 * 1000) eventsP = Promise.resolve(c.d);
+  } catch (e) {}
+  if (!eventsP) {
+    eventsP = Promise.all([1, 2, 3].map(p =>
+      fetch(`https://api.github.com/users/DearIcer/events/public?per_page=100&page=${p}`)
+        .then(r => { if (!r.ok) throw 0; return r.json(); })
+    )).then(arrs => {
+      const d = arrs.flat();
+      try { localStorage.setItem(ACT_CACHE_KEY, JSON.stringify({ t: Date.now(), d })); } catch (e) {}
+      return d;
+    });
+  }
+  eventsP.then(events => {
+    // 按天统计（UTC）
+    const counts = {};
+    events.forEach(e => { const d = e.created_at.slice(0, 10); counts[d] = (counts[d] || 0) + 1; });
+
+    // 构造最近 13 周（91 天）的网格，列=周，行=星期（周日在上）
+    const today = new Date();
+    const days = [];
+    for (let i = 90; i >= 0; i--) {
+      const dt = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i));
+      days.push(dt);
+    }
+    // 对齐：让第一天从周日开始
+    while (days[0].getUTCDay() !== 0) days.unshift(new Date(days[0].getTime() - 86400000));
+    const fmt = d => d.toISOString().slice(0, 10);
+    const level = n => n === 0 ? 0 : n <= 2 ? 1 : n <= 4 ? 2 : n <= 7 ? 3 : 4;
+    const levelBg = ['rgba(148,163,184,.12)', 'rgba(34,211,238,.3)', 'rgba(34,211,238,.55)', 'rgba(34,211,238,.8)', '#22d3ee'];
+
+    const grid = document.createElement('div');
+    grid.className = 'hm-grid';
+    days.forEach(d => {
+      const key = fmt(d);
+      const n = counts[key] || 0;
+      const cell = document.createElement('span');
+      cell.className = 'hm-cell';
+      cell.style.background = levelBg[level(n)];
+      cell.title = `${key} · ${n} 次动态`;
+      grid.appendChild(cell);
+    });
+    hm.innerHTML = '';
+    hm.appendChild(grid);
+
+    // 统计：总动态 / 活跃天数 / 当前连续 streak
+    const total = events.length;
+    const activeDays = Object.keys(counts).length;
+    let streak = 0;
+    for (let i = 0; i <= 91; i++) {
+      const dt = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i));
+      if (counts[fmt(dt)]) streak++;
+      else if (i === 0) continue; // 今天还没动态不算断
+      else break;
+    }
+    const items = [
+      { v: total, l: '90 天动态', c: '#22d3ee' },
+      { v: activeDays, l: '活跃天数', c: '#a78bfa' },
+      { v: streak, l: '连续活跃', c: '#f472b6' }
+    ];
+    stats.innerHTML = '';
+    items.forEach(it => {
+      const el = document.createElement('div');
+      el.className = 'text-center';
+      el.innerHTML = `<div class="text-2xl font-black mono" style="color:${it.c}" data-v="${it.v}">0</div><div class="text-xs text-slate-500 mt-0.5">${it.l}</div>`;
+      stats.appendChild(el);
+      countUp(el.querySelector('[data-v]'), it.v, 900);
+    });
+  }).catch(fail);
+}
+loadActivity();
+
+/* ==================== 粒子背景 ==================== */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, pts = [];
+function resize() {
+  W = canvas.width = innerWidth; H = canvas.height = innerHeight;
+  const n = Math.min(90, Math.floor(W * H / 22000));
+  pts = Array.from({length: n}, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
+    r: Math.random() * 1.6 + .4
+  }));
+}
+resize(); addEventListener('resize', resize);
+(function draw() {
+  ctx.clearRect(0, 0, W, H);
+  for (const p of pts) {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0 || p.x > W) p.vx *= -1;
+    if (p.y < 0 || p.y > H) p.vy *= -1;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(103,232,249,.55)'; ctx.fill();
+  }
+  for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+    const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = dx * dx + dy * dy;
+    if (d < 130 * 130) {
+      ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
+      ctx.strokeStyle = `rgba(139,148,250,${(1 - Math.sqrt(d) / 130) * .16})`;
+      ctx.lineWidth = 1; ctx.stroke();
+    }
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ==================== 滚动显现 & 导航 ==================== */
+const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('visible')), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 40));
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
