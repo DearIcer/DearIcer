@@ -21,8 +21,8 @@
 
 ### 🧊 关于我 About Me
 
-- 🎮 游戏开发者，专注 **Unity / Unreal Engine** 与实时渲染
-- ✨ 热爱 **卡通渲染 / MMD / Shader**，喜欢把纸片人老婆搬进引擎里
+- 🎮 游戏开发者，专注 **Unity / Unreal Engine / Godot** 与实时渲染
+- ✨ 热爱 **卡通渲染 / MMD / Shader**，喜欢把纸片人老婆搬进引擎里（正在 Godot 中还原原神渲染）
 - 🐾 做过 **桌面宠物、视频壁纸、抠像切图** 等好玩的小工具
 - 🤖 最近也在折腾 **AI 应用**（DeepSeek、语音、AI 补全）
 - 📫 欢迎来我的主页逛逛：<a href="https://dearicer.github.io">dearicer.github.io</a>
@@ -51,12 +51,9 @@
 
 | 项目 | 简介 | 数据 |
 | :--- | :--- | :--- |
+| 🌿 [**nahida-render**](https://github.com/DearIcer/nahida-render) | 在 Godot 中还原原神角色渲染 | ![stars](https://img.shields.io/github/stars/DearIcer/nahida-render?style=flat&color=8b5cf6) ![lang](https://img.shields.io/github/languages/top/DearIcer/nahida-render?style=flat&color=0ea5e9) |
 | 🎭 [**RuntimeMMDwithUnity**](https://github.com/DearIcer/RuntimeMMDwithUnity) | 在 Unity 中运行时驱动 MMD 模型 | ![stars](https://img.shields.io/github/stars/DearIcer/RuntimeMMDwithUnity?style=flat&color=8b5cf6) ![lang](https://img.shields.io/github/languages/top/DearIcer/RuntimeMMDwithUnity?style=flat&color=0ea5e9) |
 | 🐾 [**DesktopPet**](https://github.com/DearIcer/DesktopPet) | Unity 透明窗口桌面宠物 | ![stars](https://img.shields.io/github/stars/DearIcer/DesktopPet?style=flat&color=8b5cf6) ![lang](https://img.shields.io/github/languages/top/DearIcer/DesktopPet?style=flat&color=0ea5e9) |
-| 💢 [**AngryGirlfriendGame**](https://github.com/DearIcer/AngryGirlfriendGame) | 基于 DeepSeek 的模拟哄女友游戏 | ![stars](https://img.shields.io/github/stars/DearIcer/AngryGirlfriendGame?style=flat&color=8b5cf6) ![lang](https://img.shields.io/github/languages/top/DearIcer/AngryGirlfriendGame?style=flat&color=0ea5e9) |
-| 🤖 [**AiHelper**](https://github.com/DearIcer/AiHelper) | WPF 实现文本框 AI 补全功能 | ![stars](https://img.shields.io/github/stars/DearIcer/AiHelper?style=flat&color=8b5cf6) ![lang](https://img.shields.io/github/languages/top/DearIcer/AiHelper?style=flat&color=0ea5e9) |
-| 🧠 [**UnrealDeepseek**](https://github.com/DearIcer/UnrealDeepseek) | 在虚幻引擎中接入 DeepSeek | ![stars](https://img.shields.io/github/stars/DearIcer/UnrealDeepseek?style=flat&color=8b5cf6) ![lang](https://img.shields.io/github/languages/top/DearIcer/UnrealDeepseek?style=flat&color=0ea5e9) |
-| 🖼️ [**KeyingTool**](https://github.com/DearIcer/KeyingTool) | 图片绿幕抠像工具 | ![stars](https://img.shields.io/github/stars/DearIcer/KeyingTool?style=flat&color=8b5cf6) ![lang](https://img.shields.io/github/languages/top/DearIcer/KeyingTool?style=flat&color=0ea5e9) |
 
 </div>
 
@@ -75,6 +72,17 @@
 </div>
 
 ---
+
+### 🐍 贪吃蛇贡献图
+
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/DearIcer/DearIcer/output/github-contribution-grid-snake-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/DearIcer/DearIcer/output/github-contribution-grid-snake.svg">
+    <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/DearIcer/DearIcer/output/github-contribution-grid-snake.svg">
+  </picture>
+</div>
+
 <!-- ===== Footer Wave ===== -->
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:8b5cf6,100:0ea5e9&height=120&section=footer" width="100%"/>
