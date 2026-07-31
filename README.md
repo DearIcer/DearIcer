@@ -22,7 +22,7 @@
 ### 🧊 关于我 About Me
 
 - 🎮 游戏开发者，专注 **Unity / Unreal Engine / Godot** 与实时渲染
-- ✨ 热爱 **卡通渲染 / MMD / Shader**，喜欢把纸片人老婆搬进引擎里（正在 Godot 中还原原神渲染）
+- ✨ 热爱 **卡通渲染 / MMD / Shader**，喜欢把纸片人老婆搬进引擎里
 - 🐾 做过 **桌面宠物、视频壁纸、抠像切图** 等好玩的小工具
 - 🤖 最近也在折腾 **AI 应用**（DeepSeek、语音、AI 补全）
 - 📫 欢迎来我的主页逛逛：<a href="https://dearicer.github.io">dearicer.github.io</a>
